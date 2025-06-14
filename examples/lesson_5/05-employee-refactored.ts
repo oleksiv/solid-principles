@@ -56,3 +56,22 @@ export class Manager implements Workable, Eatable, Manageable {
         console.log(`Схвалюю відпустку для ${id}`);
     }
 }
+
+// Створюємо екземпляри працівників
+const regularEmployee = new RegularEmployee();
+const manager = new Manager();
+
+// Звичайний працівник може працювати і ходити на обід
+regularEmployee.work();
+regularEmployee.eat();
+
+// Менеджер може робити все те саме, плюс управляти командою
+manager.work();
+manager.eat();
+manager.manageTeam();
+manager.fireEmployee('123');
+manager.approveVacation('456');
+
+// Якщо спробувати викликати метод управління на звичайному працівнику,
+// TypeScript покаже помилку компіляції:
+// regularEmployee.manageTeam(); // ❌ Помилка компіляції!

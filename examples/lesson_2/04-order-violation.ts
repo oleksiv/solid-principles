@@ -70,3 +70,10 @@ export class Order {
         console.log(`Writing to log: ${entry}`);
     }
 }
+
+// Приклад використання
+const order = new Order('customer@example.com');
+order.addItem('Ноутбук', 25000, 1);
+order.addItem('Миша', 500, 2);
+order.sendConfirmationEmail();
+order.logOrder();

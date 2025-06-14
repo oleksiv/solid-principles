@@ -62,6 +62,12 @@ export class Square implements Shape {
     }
 }
 
-export function calculateArea(shape: Shape): void {
+function calculateArea(shape: Shape): void {
     console.log(`Площа фігури: ${shape.getArea()}`);
 }
+
+const rectangle = new Rectangle(5, 4);
+const square = new Square(3);
+
+calculateArea(rectangle);
+calculateArea(square);

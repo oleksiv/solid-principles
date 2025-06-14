@@ -1,14 +1,4 @@
-/**
- * Приклад порушення принципу підстановки Лісков (Liskov Substitution Principle)
- *
- * Проблеми цього підходу:
- * - Квадрат змінює поведінку батьківського класу Rectangle
- * - Функції, які працюють з Rectangle, дають непередбачувані результати з Square
- * - Порушується очікувана поведінка - ширина і висота мають встановлюватися незалежно
- * - Доводиться додавати додаткові перевірки типів
- */
-
-export class Rectangle {
+class Rectangle {
     protected width: number;
     protected height: number;
 
@@ -38,7 +28,7 @@ export class Rectangle {
     }
 }
 
-export class Square extends Rectangle {
+class Square extends Rectangle {
     constructor(side: number) {
         super(side, side);
     }
@@ -52,11 +42,4 @@ export class Square extends Rectangle {
         this.width = height;
         this.height = height;
     }
-}
-
-export function resizeRectangle(rectangle: Rectangle): void {
-    rectangle.setWidth(5);
-    rectangle.setHeight(4);
-
-    console.log(`Очікувана площа: 20, Реальна площа: ${rectangle.getArea()}`);
 }

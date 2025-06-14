@@ -1,15 +1,3 @@
-/**
- * Клас User, який порушує принцип єдиної відповідальності (SRP)
- *
- * Цей клас має кілька відповідальностей:
- * 1. Зберігання даних користувача
- * 2. Валідація даних користувача
- * 3. Збереження в базу даних
- * 4. Форматування даних для відображення
- *
- * Це поганий приклад - клас повинен мати лише одну причину для зміни
- */
-
 export class User {
     private name: string;
     private email: string;
@@ -73,3 +61,9 @@ export class User {
         });
     }
 }
+
+// Приклад використання
+const user = new User('John Doe', 'john.doe@example.com', 30);
+user.saveToDatabase();
+console.log(user.toDisplayString());
+console.log(user.toJSON());

@@ -1,15 +1,3 @@
-/**
- * Рефакторені класи Order, які дотримуються принципу єдиної відповідальності (SRP)
- *
- * Кожен клас тепер має єдину відповідальність:
- * - Order: Тільки управляє товарами замовлення та інформацією про клієнта
- * - OrderCalculator: Тільки обробляє обчислення цін
- * - OrderEmailService: Тільки обробляє email сповіщення
- * - OrderLogger: Тільки обробляє логування
- *
- * Це хороший приклад - кожен клас має лише одну причину для зміни
- */
-
 // Клас Order - відповідає тільки за управління даними замовлення
 export class Order {
     private items: Array<{ name: string; price: number; quantity: number }> = [];
@@ -80,3 +68,20 @@ export class OrderLogger {
         console.log(`Writing to log: ${entry}`);
     }
 }
+
+// Створюємо нове замовлення
+const order = new Order('customer@example.com');
+
+// Додаємо товари до замовлення
+order.addItem('Ноутбук', 25000, 1);
+order.addItem('Миша', 500, 2);
+
+// Обчислюємо загальну суму з податком
+const total = OrderCalculator.calculateTotalWithTax(order);
+console.log(`Total: ${total} грн`);
+
+// Відправляємо email підтвердження
+OrderEmailService.sendConfirmationEmail(order);
+
+// Логуємо замовлення
+OrderLogger.logOrder(order);

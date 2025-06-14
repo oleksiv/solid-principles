@@ -1,20 +1,8 @@
-/**
- * Рефакторингована система знижок з дотриманням принципу відкритості/закритості
- *
- * Переваги:
- * - Кожна стратегія знижки інкапсульована в окремому класі
- * - Легко додавати нові типи знижок без зміни існуючого коду
- * - Клієнт може динамічно змінювати свою стратегію знижки
- * - Простіше тестувати кожну стратегію окремо
- */
-
-// Базовий абстрактний клас для всіх стратегій знижок
 export abstract class DiscountStrategy {
     abstract calculateDiscount(orderAmount: number, memberSince: Date): number;
     abstract getDescription(): string;
 }
 
-// Конкретні стратегії знижок
 export class NoDiscountStrategy extends DiscountStrategy {
     calculateDiscount(orderAmount: number, memberSince: Date): number {
         return 0;
@@ -64,7 +52,30 @@ export class StudentDiscountStrategy extends DiscountStrategy {
     }
 }
 
-// Клас клієнта тепер містить стратегію знижки
+export class SeniorDiscountStrategy extends DiscountStrategy {
+    calculateDiscount(orderAmount: number, memberSince: Date): number {
+        return orderAmount * 0.12;
+    }
+
+    getDescription(): string {
+        return 'Знижка для пенсіонерів 12%';
+    }
+}
+
+export class SeasonalDiscountStrategy extends DiscountStrategy {
+    constructor(private seasonalRate: number, private seasonName: string) {
+        super();
+    }
+
+    calculateDiscount(orderAmount: number, memberSince: Date): number {
+        return orderAmount * this.seasonalRate;
+    }
+
+    getDescription(): string {
+        return `${this.seasonName} знижка ${this.seasonalRate * 100}%`;
+    }
+}
+
 export class Customer {
     constructor(
         private id: string,
@@ -94,7 +105,6 @@ export class Customer {
     }
 }
 
-// Калькулятор знижок тепер не залежить від конкретних типів клієнтів
 export class DiscountCalculator {
     calculateDiscount(customer: Customer, orderAmount: number): number {
         return customer
@@ -125,3 +135,29 @@ export class DiscountCalculator {
     `;
     }
 }
+
+const customers = [
+    new Customer('1', 'Іван Звичайний', new NoDiscountStrategy(), new Date('2023-01-01')),
+    new Customer('2', 'Марія Преміум', new PremiumDiscountStrategy(), new Date('2022-06-15')),
+    new Customer('3', 'Олександр VIP', new VipDiscountStrategy(), new Date('2020-03-20')),
+    new Customer('4', 'Анна Студентка', new StudentDiscountStrategy(), new Date('2023-09-01')),
+    new Customer('5', 'Петро Пенсіонер', new SeniorDiscountStrategy(), new Date('2021-12-10')),
+];
+
+const newYearDiscount = new SeasonalDiscountStrategy(0.25, 'Новорічна');
+customers.push(new Customer('6', 'Оксана Новорічна', newYearDiscount, new Date('2023-01-15')));
+
+const calculator = new DiscountCalculator();
+const orderAmount = 1000;
+
+customers.forEach((customer) => {
+    const report = calculator.generateDiscountReport(customer, orderAmount);
+    console.log(report);
+    console.log('---');
+});
+
+const regularCustomer = customers[0];
+console.log('До зміни статусу:', calculator.getDiscountDescription(regularCustomer));
+
+regularCustomer.setDiscountStrategy(new VipDiscountStrategy());
+console.log('Після отримання VIP:', calculator.getDiscountDescription(regularCustomer));
