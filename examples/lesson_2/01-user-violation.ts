@@ -1,3 +1,15 @@
+/**
+ * Клас User, який порушує принцип єдиної відповідальності (SRP)
+ *
+ * Цей клас має кілька відповідальностей:
+ * 1. Управління даними користувача (getName, getEmail, getAge)
+ * 2. Валідація даних (validateEmail, validateAge, validateName)
+ * 3. Збереження в базу даних (saveToDatabase, executeQuery)
+ * 4. Форматування даних для відображення (toDisplayString, toJSON)
+ *
+ * Це поганий приклад - занадто багато причин для зміни цього класу
+ */
+
 export class User {
     private name: string;
     private email: string;
@@ -9,6 +21,7 @@ export class User {
         this.age = age;
     }
 
+    // Відповідальність 1: Управління даними користувача
     getName(): string {
         return this.name;
     }
@@ -21,6 +34,7 @@ export class User {
         return this.age;
     }
 
+    // Відповідальність 2: Валідація даних
     validateEmail(): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(this.email);
@@ -34,6 +48,7 @@ export class User {
         return this.name.length >= 2 && this.name.length <= 50;
     }
 
+    // Відповідальність 3: Збереження в базу даних
     saveToDatabase(): void {
         if (this.validateEmail() && this.validateAge() && this.validateName()) {
             console.log(`Saving user ${this.name} to database...`);
@@ -49,6 +64,7 @@ export class User {
         console.log(`Executing: ${query}`);
     }
 
+    // Відповідальність 4: Форматування даних для відображення
     toDisplayString(): string {
         return `User: ${this.name} (${this.email}), Age: ${this.age}`;
     }
@@ -63,7 +79,11 @@ export class User {
 }
 
 // Приклад використання
-const user = new User('John Doe', 'john.doe@example.com', 30);
+// Створюємо користувача
+const user = new User('Олександр', 'alex@example.com', 25);
+
+// Використовуємо всі його "можливості"
+console.log(user.getName());
+console.log('Email valid:', user.validateEmail());
 user.saveToDatabase();
 console.log(user.toDisplayString());
-console.log(user.toJSON());

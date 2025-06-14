@@ -69,19 +69,14 @@ export class OrderLogger {
     }
 }
 
-// Створюємо нове замовлення
+// Створюємо замовлення
 const order = new Order('customer@example.com');
-
-// Додаємо товари до замовлення
 order.addItem('Ноутбук', 25000, 1);
 order.addItem('Миша', 500, 2);
 
-// Обчислюємо загальну суму з податком
+// Кожен компонент відповідає за свою частину
 const total = OrderCalculator.calculateTotalWithTax(order);
 console.log(`Total: ${total} грн`);
 
-// Відправляємо email підтвердження
 OrderEmailService.sendConfirmationEmail(order);
-
-// Логуємо замовлення
 OrderLogger.logOrder(order);

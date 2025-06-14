@@ -83,10 +83,10 @@ export class UserFormatter {
     }
 }
 
-// Створюємо нового користувача
+// Створюємо користувача
 const user = new User('Олександр', 'alex@example.com', 25);
 
-// Валідуємо користувача
+// Валідуємо
 const isValid = UserValidator.validateUser(user);
 console.log('User is valid:', isValid);
 

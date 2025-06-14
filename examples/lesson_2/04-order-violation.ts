@@ -18,6 +18,7 @@ export class Order {
         this.customerEmail = customerEmail;
     }
 
+    // Відповідальність 1: Управління товарами
     addItem(name: string, price: number, quantity: number): void {
         this.items.push({ name, price, quantity });
     }
@@ -26,6 +27,7 @@ export class Order {
         return [...this.items];
     }
 
+    // Відповідальність 2: Обчислення вартості
     calculateTotal(): number {
         return this.items.reduce((total, item) => {
             return total + item.price * item.quantity;
@@ -40,6 +42,7 @@ export class Order {
         return this.calculateTotal() + this.calculateTax();
     }
 
+    // Відповідальність 3: Відправка email
     sendConfirmationEmail(): void {
         const total = this.calculateTotalWithTax();
         const emailBody = `
@@ -57,6 +60,7 @@ export class Order {
         console.log(`Body: ${body}`);
     }
 
+    // Відповідальність 4: Логування
     logOrder(): void {
         const timestamp = new Date().toISOString();
         const logEntry = `[${timestamp}] Order created for ${
@@ -75,5 +79,8 @@ export class Order {
 const order = new Order('customer@example.com');
 order.addItem('Ноутбук', 25000, 1);
 order.addItem('Миша', 500, 2);
+
+// Клас робить абсолютно все
+console.log('Total:', order.calculateTotalWithTax());
 order.sendConfirmationEmail();
 order.logOrder();
