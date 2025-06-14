@@ -12,67 +12,67 @@
 
 ```typescript
 class User {
-  private name: string;
-  private email: string;
-  private age: number;
+    private name: string;
+    private email: string;
+    private age: number;
 
-  constructor(name: string, email: string, age: number) {
-    this.name = name;
-    this.email = email;
-    this.age = age;
-  }
-
-  getName(): string {
-    return this.name;
-  }
-
-  getEmail(): string {
-    return this.email;
-  }
-
-  getAge(): number {
-    return this.age;
-  }
-
-  validateEmail(): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(this.email);
-  }
-
-  validateAge(): boolean {
-    return this.age >= 0 && this.age <= 120;
-  }
-
-  validateName(): boolean {
-    return this.name.length >= 2 && this.name.length <= 50;
-  }
-
-  saveToDatabase(): void {
-    if (this.validateEmail() && this.validateAge() && this.validateName()) {
-      console.log(`Saving user ${this.name} to database...`);
-      this.executeQuery(
-        `INSERT INTO users (name, email, age) VALUES ('${this.name}', '${this.email}', ${this.age})`
-      );
-    } else {
-      throw new Error("Invalid user data");
+    constructor(name: string, email: string, age: number) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
     }
-  }
 
-  private executeQuery(query: string): void {
-    console.log(`Executing: ${query}`);
-  }
+    getName(): string {
+        return this.name;
+    }
 
-  toDisplayString(): string {
-    return `User: ${this.name} (${this.email}), Age: ${this.age}`;
-  }
+    getEmail(): string {
+        return this.email;
+    }
 
-  toJSON(): string {
-    return JSON.stringify({
-      name: this.name,
-      email: this.email,
-      age: this.age,
-    });
-  }
+    getAge(): number {
+        return this.age;
+    }
+
+    validateEmail(): boolean {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(this.email);
+    }
+
+    validateAge(): boolean {
+        return this.age >= 0 && this.age <= 120;
+    }
+
+    validateName(): boolean {
+        return this.name.length >= 2 && this.name.length <= 50;
+    }
+
+    saveToDatabase(): void {
+        if (this.validateEmail() && this.validateAge() && this.validateName()) {
+            console.log(`Saving user ${this.name} to database...`);
+            this.executeQuery(
+                `INSERT INTO users (name, email, age) VALUES ('${this.name}', '${this.email}', ${this.age})`
+            );
+        } else {
+            throw new Error('Invalid user data');
+        }
+    }
+
+    private executeQuery(query: string): void {
+        console.log(`Executing: ${query}`);
+    }
+
+    toDisplayString(): string {
+        return `User: ${this.name} (${this.email}), Age: ${this.age}`;
+    }
+
+    toJSON(): string {
+        return JSON.stringify({
+            name: this.name,
+            email: this.email,
+            age: this.age,
+        });
+    }
 }
 ```
 
@@ -98,23 +98,19 @@ class User {
 
 ```typescript
 class User {
-  constructor(
-    private name: string,
-    private email: string,
-    private age: number
-  ) {}
+    constructor(private name: string, private email: string, private age: number) {}
 
-  getName(): string {
-    return this.name;
-  }
+    getName(): string {
+        return this.name;
+    }
 
-  getEmail(): string {
-    return this.email;
-  }
+    getEmail(): string {
+        return this.email;
+    }
 
-  getAge(): number {
-    return this.age;
-  }
+    getAge(): number {
+        return this.age;
+    }
 }
 ```
 
@@ -124,26 +120,26 @@ class User {
 
 ```typescript
 class UserValidator {
-  static validateEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
+    static validateEmail(email: string): boolean {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
 
-  static validateAge(age: number): boolean {
-    return age >= 0 && age <= 120;
-  }
+    static validateAge(age: number): boolean {
+        return age >= 0 && age <= 120;
+    }
 
-  static validateName(name: string): boolean {
-    return name.length >= 2 && name.length <= 50;
-  }
+    static validateName(name: string): boolean {
+        return name.length >= 2 && name.length <= 50;
+    }
 
-  static validateUser(user: User): boolean {
-    return (
-      this.validateEmail(user.getEmail()) &&
-      this.validateAge(user.getAge()) &&
-      this.validateName(user.getName())
-    );
-  }
+    static validateUser(user: User): boolean {
+        return (
+            this.validateEmail(user.getEmail()) &&
+            this.validateAge(user.getAge()) &&
+            this.validateName(user.getName())
+        );
+    }
 }
 ```
 
@@ -153,19 +149,19 @@ class UserValidator {
 
 ```typescript
 class UserRepository {
-  saveUser(user: User): void {
-    if (!UserValidator.validateUser(user)) {
-      throw new Error("Invalid user data");
+    saveUser(user: User): void {
+        if (!UserValidator.validateUser(user)) {
+            throw new Error('Invalid user data');
+        }
+
+        console.log(`Saving user ${user.getName()} to database...`);
+        const query = `INSERT INTO users (name, email, age) VALUES ('${user.getName()}', '${user.getEmail()}', ${user.getAge()})`;
+        this.executeQuery(query);
     }
 
-    console.log(`Saving user ${user.getName()} to database...`);
-    const query = `INSERT INTO users (name, email, age) VALUES ('${user.getName()}', '${user.getEmail()}', ${user.getAge()})`;
-    this.executeQuery(query);
-  }
-
-  private executeQuery(query: string): void {
-    console.log(`Executing: ${query}`);
-  }
+    private executeQuery(query: string): void {
+        console.log(`Executing: ${query}`);
+    }
 }
 ```
 
@@ -175,27 +171,27 @@ UserRepository відповідає тільки за збереження ко�
 
 ```typescript
 class UserFormatter {
-  static toDisplayString(user: User): string {
-    return `User: ${user.getName()} (${user.getEmail()}), Age: ${user.getAge()}`;
-  }
+    static toDisplayString(user: User): string {
+        return `User: ${user.getName()} (${user.getEmail()}), Age: ${user.getAge()}`;
+    }
 
-  static toJSON(user: User): string {
-    return JSON.stringify({
-      name: user.getName(),
-      email: user.getEmail(),
-      age: user.getAge(),
-    });
-  }
+    static toJSON(user: User): string {
+        return JSON.stringify({
+            name: user.getName(),
+            email: user.getEmail(),
+            age: user.getAge(),
+        });
+    }
 }
 ```
 
 Тепер подивимося, як використовувати весь цей рефакторений код:
 
 ```typescript
-const user = new User("Олександр", "alex@example.com", 25);
+const user = new User('Олександр', 'alex@example.com', 25);
 
 const isValid = UserValidator.validateUser(user);
-console.log("User is valid:", isValid);
+console.log('User is valid:', isValid);
 
 const repository = new UserRepository();
 repository.saveUser(user);
@@ -217,64 +213,64 @@ console.log(jsonString);
 
 ```typescript
 class Order {
-  private items: Array<{ name: string; price: number; quantity: number }> = [];
-  private customerEmail: string;
+    private items: Array<{ name: string; price: number; quantity: number }> = [];
+    private customerEmail: string;
 
-  constructor(customerEmail: string) {
-    this.customerEmail = customerEmail;
-  }
+    constructor(customerEmail: string) {
+        this.customerEmail = customerEmail;
+    }
 
-  addItem(name: string, price: number, quantity: number): void {
-    this.items.push({ name, price, quantity });
-  }
+    addItem(name: string, price: number, quantity: number): void {
+        this.items.push({ name, price, quantity });
+    }
 
-  getItems(): Array<{ name: string; price: number; quantity: number }> {
-    return [...this.items];
-  }
+    getItems(): Array<{ name: string; price: number; quantity: number }> {
+        return [...this.items];
+    }
 
-  calculateTotal(): number {
-    return this.items.reduce((total, item) => {
-      return total + item.price * item.quantity;
-    }, 0);
-  }
+    calculateTotal(): number {
+        return this.items.reduce((total, item) => {
+            return total + item.price * item.quantity;
+        }, 0);
+    }
 
-  calculateTax(): number {
-    return this.calculateTotal() * 0.2;
-  }
+    calculateTax(): number {
+        return this.calculateTotal() * 0.2;
+    }
 
-  calculateTotalWithTax(): number {
-    return this.calculateTotal() + this.calculateTax();
-  }
+    calculateTotalWithTax(): number {
+        return this.calculateTotal() + this.calculateTax();
+    }
 
-  sendConfirmationEmail(): void {
-    const total = this.calculateTotalWithTax();
-    const emailBody = `
+    sendConfirmationEmail(): void {
+        const total = this.calculateTotalWithTax();
+        const emailBody = `
       Дякуємо за замовлення!
       Товарів: ${this.items.length}
       Загальна сума: ${total} грн
     `;
 
-    this.sendEmail(this.customerEmail, "Підтвердження замовлення", emailBody);
-  }
+        this.sendEmail(this.customerEmail, 'Підтвердження замовлення', emailBody);
+    }
 
-  private sendEmail(to: string, subject: string, body: string): void {
-    console.log(`Sending email to ${to}`);
-    console.log(`Subject: ${subject}`);
-    console.log(`Body: ${body}`);
-  }
+    private sendEmail(to: string, subject: string, body: string): void {
+        console.log(`Sending email to ${to}`);
+        console.log(`Subject: ${subject}`);
+        console.log(`Body: ${body}`);
+    }
 
-  logOrder(): void {
-    const timestamp = new Date().toISOString();
-    const logEntry = `[${timestamp}] Order created for ${
-      this.customerEmail
-    }, Total: ${this.calculateTotalWithTax()} грн`;
+    logOrder(): void {
+        const timestamp = new Date().toISOString();
+        const logEntry = `[${timestamp}] Order created for ${
+            this.customerEmail
+        }, Total: ${this.calculateTotalWithTax()} грн`;
 
-    this.writeToLogFile(logEntry);
-  }
+        this.writeToLogFile(logEntry);
+    }
 
-  private writeToLogFile(entry: string): void {
-    console.log(`Writing to log: ${entry}`);
-  }
+    private writeToLogFile(entry: string): void {
+        console.log(`Writing to log: ${entry}`);
+    }
 }
 ```
 
@@ -284,21 +280,21 @@ class Order {
 
 ```typescript
 class Order {
-  private items: Array<{ name: string; price: number; quantity: number }> = [];
+    private items: Array<{ name: string; price: number; quantity: number }> = [];
 
-  constructor(private customerEmail: string) {}
+    constructor(private customerEmail: string) {}
 
-  addItem(name: string, price: number, quantity: number): void {
-    this.items.push({ name, price, quantity });
-  }
+    addItem(name: string, price: number, quantity: number): void {
+        this.items.push({ name, price, quantity });
+    }
 
-  getItems(): Array<{ name: string; price: number; quantity: number }> {
-    return [...this.items];
-  }
+    getItems(): Array<{ name: string; price: number; quantity: number }> {
+        return [...this.items];
+    }
 
-  getCustomerEmail(): string {
-    return this.customerEmail;
-  }
+    getCustomerEmail(): string {
+        return this.customerEmail;
+    }
 }
 ```
 
@@ -306,19 +302,19 @@ class Order {
 
 ```typescript
 class OrderCalculator {
-  static calculateTotal(order: Order): number {
-    return order.getItems().reduce((total, item) => {
-      return total + item.price * item.quantity;
-    }, 0);
-  }
+    static calculateTotal(order: Order): number {
+        return order.getItems().reduce((total, item) => {
+            return total + item.price * item.quantity;
+        }, 0);
+    }
 
-  static calculateTax(order: Order): number {
-    return this.calculateTotal(order) * 0.2;
-  }
+    static calculateTax(order: Order): number {
+        return this.calculateTotal(order) * 0.2;
+    }
 
-  static calculateTotalWithTax(order: Order): number {
-    return this.calculateTotal(order) + this.calculateTax(order);
-  }
+    static calculateTotalWithTax(order: Order): number {
+        return this.calculateTotal(order) + this.calculateTax(order);
+    }
 }
 ```
 
@@ -326,26 +322,22 @@ class OrderCalculator {
 
 ```typescript
 class OrderEmailService {
-  static sendConfirmationEmail(order: Order): void {
-    const total = OrderCalculator.calculateTotalWithTax(order);
-    const emailBody = `
+    static sendConfirmationEmail(order: Order): void {
+        const total = OrderCalculator.calculateTotalWithTax(order);
+        const emailBody = `
       Дякуємо за замовлення!
       Товарів: ${order.getItems().length}
       Загальна сума: ${total} грн
     `;
 
-    this.sendEmail(
-      order.getCustomerEmail(),
-      "Підтвердження замовлення",
-      emailBody
-    );
-  }
+        this.sendEmail(order.getCustomerEmail(), 'Підтвердження замовлення', emailBody);
+    }
 
-  private static sendEmail(to: string, subject: string, body: string): void {
-    console.log(`Sending email to ${to}`);
-    console.log(`Subject: ${subject}`);
-    console.log(`Body: ${body}`);
-  }
+    private static sendEmail(to: string, subject: string, body: string): void {
+        console.log(`Sending email to ${to}`);
+        console.log(`Subject: ${subject}`);
+        console.log(`Body: ${body}`);
+    }
 }
 ```
 
@@ -353,26 +345,26 @@ class OrderEmailService {
 
 ```typescript
 class OrderLogger {
-  static logOrder(order: Order): void {
-    const timestamp = new Date().toISOString();
-    const total = OrderCalculator.calculateTotalWithTax(order);
-    const logEntry = `[${timestamp}] Order created for ${order.getCustomerEmail()}, Total: ${total} грн`;
+    static logOrder(order: Order): void {
+        const timestamp = new Date().toISOString();
+        const total = OrderCalculator.calculateTotalWithTax(order);
+        const logEntry = `[${timestamp}] Order created for ${order.getCustomerEmail()}, Total: ${total} грн`;
 
-    this.writeToLogFile(logEntry);
-  }
+        this.writeToLogFile(logEntry);
+    }
 
-  private static writeToLogFile(entry: string): void {
-    console.log(`Writing to log: ${entry}`);
-  }
+    private static writeToLogFile(entry: string): void {
+        console.log(`Writing to log: ${entry}`);
+    }
 }
 ```
 
 Тепер використання виглядає так:
 
 ```typescript
-const order = new Order("customer@example.com");
-order.addItem("Ноутбук", 25000, 1);
-order.addItem("Миша", 500, 2);
+const order = new Order('customer@example.com');
+order.addItem('Ноутбук', 25000, 1);
+order.addItem('Миша', 500, 2);
 
 const total = OrderCalculator.calculateTotalWithTax(order);
 console.log(`Total: ${total} грн`);
